@@ -3,8 +3,8 @@ void LoadAllConfigs() {
 	NCRPG_Configs RPG_Configs = NCRPG_Configs(CONFIG_CORE);
 	cfg_iLogMode = RPG_Configs.GetInt("logs","mode",1);
 	cfg_iLogDebug = RPG_Configs.GetInt("logs","debug",0);
-	RPG_Configs.GetString("logs", "path", cfg_sLogPath, sizeof(cfg_sLogPath), "addons/sourcemod/logs/NCRPG/log.log");
-	RPG_Configs.GetString("logs", "error_path", cfg_sLogErrorPath, sizeof(cfg_sLogErrorPath), "addons/sourcemod/logs/NCRPG/error_log.log");
+	RPG_Configs.GetString("logs", "path", cfg_sLogPath, sizeof(cfg_sLogPath), "addons/sourcemod/logs/ncrpg/log.log");
+	RPG_Configs.GetString("logs", "error_path", cfg_sLogErrorPath, sizeof(cfg_sLogErrorPath), "addons/sourcemod/logs/ncrpg/error_log.log");
 	cfg_iExpStart		= RPG_Configs.GetInt("xp", "exp_start", 300);
 	cfg_iExpInc			= RPG_Configs.GetInt("xp", "exp_inc", 100);
 	cfg_iExpMax			= RPG_Configs.GetInt("xp", "exp_max", 9999);

@@ -20,7 +20,7 @@ public void OnMapStart()
 {
 	KeyValues hConfig = new KeyValues("NCRPG");
 	char full_path[512];
-	FormatEx(full_path,sizeof full_path,"configs/NCRPG/Addon.%s.txt",ThisAddonName);
+	FormatEx(full_path,sizeof full_path,"configs/ncrpg/addon.%s.txt",ThisAddonName);
 	BuildPath(Path_SM, full_path, sizeof full_path, full_path);
 	if(FileExists(full_path))
 	{

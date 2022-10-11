@@ -35,10 +35,10 @@ enum ValveGameEnum
   CSGO=Game_CSGO
 }
 
-#define CONFIG_CORE  "CORE"
+#define CONFIG_CORE  "core"
 #define CONFIG_NULL  ""
-#define CONFIG_SKILL "Skill."
-#define CONFIG_ADDON "Addon."
+#define CONFIG_SKILL "skill."
+#define CONFIG_ADDON "addon."
 #define CONFIG_TXT ".txt"
 #define CONFIG_CFG ".cfg"
 

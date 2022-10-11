@@ -43,7 +43,7 @@ bool LoadAdminConfig() {
 	
 	if(cfg_bLogs)
 	{
-		RPG_Configs.GetString("logs","admins_path",cfg_sLogPath, sizeof cfg_sLogPath, "addons/sourcemod/logs/NCRPG/admins");
+		RPG_Configs.GetString("logs","admins_path",cfg_sLogPath, sizeof cfg_sLogPath, "addons/sourcemod/logs/ncrpg/admins");
 		FormatTime(buffer, sizeof buffer, "%Y%m%d", GetTime());
 		Format(cfg_sLogPath, sizeof cfg_sLogPath, "%s_%s.log", cfg_sLogPath, buffer);
 	}

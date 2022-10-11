@@ -49,38 +49,48 @@ stock bool GetConfigValueString(KeyValues hConfig,const char[] section, const ch
 }
 
 
-stock KeyValues NCRPG_LoadConfigFile(char[] filename,char[] config_type = CONFIG_NULL,char[] config_format = CONFIG_TXT, bool create=true)
+KeyValues NCRPG_LoadConfigFile(char[] filename,char[] config_type = CONFIG_NULL,char[] config_format = CONFIG_TXT, bool create = true)
 {
-	KeyValues hConfig = new KeyValues("NCRPG");
-	//KeyValues kv = CreateKeyValues("NCRPG");
-	char full_path[512];
-	FormatEx(full_path,sizeof full_path,"configs/NCRPG/%s%s%s",config_type,filename,config_format);
+	KeyValues hConfig = new KeyValues("ncrpg");
+	char full_path[PLATFORM_MAX_PATH];
+	
+	
+	FormatEx(full_path,sizeof full_path,"configs/ncrpg/");
 	BuildPath(Path_SM, full_path, sizeof full_path, full_path);
-	if(!FileExists(full_path))
+	if (!DirExists(full_path))
 	{
-		CloseHandle(CreateFile(full_path));
-		hConfig.ExportToFile(full_path);
+		CreateDirectory(full_path, FPERM_U_READ|FPERM_U_WRITE|FPERM_U_EXEC|FPERM_G_READ|FPERM_G_WRITE|FPERM_O_READ|FPERM_O_WRITE);
+		PrintToServer("[NC RPG] Root directory created!", full_path);
 	}
-	else hConfig.ImportFromFile(full_path);
+	
+	FormatEx(full_path,sizeof full_path,"configs/ncrpg/%s%s%s",config_type,filename,config_format);
+	BuildPath(Path_SM, full_path, sizeof full_path, full_path);
+	
+	hConfig.Rewind();
+	if (FileExists(full_path))
+		hConfig.ImportFromFile(full_path);
+	else {
+		if (create)
+			hConfig.ExportToFile(full_path);
+	}
 	return hConfig;
 }
 
 stock void NCRPG_SaveConfigFile(KeyValues hConfig,char[] filename,char[] config_type = CONFIG_NULL,char[] config_format = CONFIG_TXT,close = true)
 {
 	char full_path[512];
-	FormatEx(full_path,sizeof full_path,"configs/NCRPG/%s%s%s",config_type,filename,config_format);
+	FormatEx(full_path,sizeof full_path,"configs/ncrpg/%s%s%s",config_type,filename,config_format);
 	BuildPath(Path_SM, full_path, sizeof full_path, full_path);
-	hConfig.GoBack();
-	if(!FileExists(full_path))
-	{
-		CloseHandle(CreateFile(full_path));
-		hConfig.ExportToFile(full_path);
-	}
+	
+//	PrintToServer("[DEBUG] Save %s", full_path);
+	hConfig.Rewind();//hConfig.GoBack(); // какой GoBack? При сохранении делают Rewind
 	hConfig.ExportToFile(full_path);
-	if(close) delete hConfig;
+	
+	if(close) 
+		delete hConfig;
 }
 
-stock File CreateFile(const char[] path, const char[] mode = "w+")
+File CreateFile(const char[] path, const char[] mode = "w+")
 {
 	char dir[12][PLATFORM_MAX_PATH]; char splitter[2] = "/"; 
 	int count = FindCharInString(path, splitter[0], false);
@@ -92,7 +102,7 @@ stock File CreateFile(const char[] path, const char[] mode = "w+")
 			Format(dir[i], sizeof(dir[]), "%s%s%s", dir[i-1],splitter, dir[i]);
 			
 		if(!DirExists(dir[i]))
-			if(!CreateDirectory(dir[i], FPERM_O_EXEC|FPERM_U_READ|FPERM_U_WRITE)) NCRPG_LogMessage(LogType_Error,"Не удалось создать путь %s",dir[i]);
+			if(!CreateDirectory(dir[i], FPERM_U_READ|FPERM_U_WRITE|FPERM_U_EXEC|FPERM_G_READ|FPERM_G_WRITE|FPERM_O_READ|FPERM_O_WRITE)) NCRPG_LogMessage(LogType_Error,"Не удалось создать путь %s",dir[i]);
 	}
 	
 	return OpenFile(path, mode);
@@ -124,6 +134,6 @@ methodmap NCRPG_Configs
 	}
 	public void SaveConfigFile(char[] filename,char[] config_type = CONFIG_NULL,char[] config_format = CONFIG_TXT,bool close = true)
 	{
-		if(this.Kv!=null && this.Kv!=INVALID_HANDLE) NCRPG_SaveConfigFile(this.Kv,filename,config_type,config_format,close);
+		NCRPG_SaveConfigFile(this.Kv,filename,config_type,config_format,close);
 	}
 };
