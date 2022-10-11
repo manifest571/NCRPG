@@ -135,6 +135,8 @@ public NCRpg_ShowMainMenu(client)
 		FormatEx(display, sizeof(display), "%T", "MainMenuHelp", client);
 		AddMenuItem(menu, "help", display);
 		
+		
+		AddMenuItem(menu, "bonus", "Получить бонус");
 	
 		
 		SetMenuExitButton(menu, true);
@@ -166,6 +168,11 @@ public MainMenuHandler(Handle:menu, MenuAction:action, client, param2)
 			else if(StrEqual(info, "help"))
 			{
 				DisplayMenu(BuildMenuHelp(client), client, MENU_TIME_FOREVER);
+			}
+			else if(StrEqual(info, "bonus"))
+			{
+				ClientCommand(client, "sm_bonus");
+				NCRpg_ShowMainMenu(client);
 			}	
 		}
 	}
